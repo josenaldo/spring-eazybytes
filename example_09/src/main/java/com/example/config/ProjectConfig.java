@@ -2,6 +2,7 @@ package com.example.config;
 
 import com.example.beans.Person;
 import com.example.beans.Vehicle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +16,15 @@ to be used in the application.
 @Configuration
 public class ProjectConfig {
 
+    @Bean(name = "vehicleName")
+    public String vehicleName() {
+        return "Subaru";
+    }
+
     @Bean
-    public Vehicle vehicle() {
+    public Vehicle vehicle(@Autowired String vehicleName) {
         Vehicle vehicle = new Vehicle();
-        vehicle.setName("Toyota");
+        vehicle.setName(vehicleName);
         return vehicle;
     }
 
@@ -33,7 +39,8 @@ public class ProjectConfig {
     public Person person() {
         Person person = new Person();
         person.setName("Lucy");
-        person.setVehicle(vehicle());
+        Vehicle vehicle = vehicle("Monza");
+        person.setVehicle(vehicle);
         return person;
     }
 
